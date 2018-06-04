@@ -8,7 +8,7 @@ namespace CompanyApp.Models
 {
     public class Company
     {
-        public List<Employee> Employees { get; } = new List<Employee>();
+        public List<IEmployee> Employees { get; } = new List<IEmployee>();
 
         public static Company companyInstance { get; private set; }
 
@@ -21,27 +21,18 @@ namespace CompanyApp.Models
         {
         }
 
-        public void AddEmployee(Employee employee)
+        public void AddEmployee(IEmployee employee)
         {
-            if (employee is ManagerAbstract)
+            if (employee is IBoss)
             {
-                foreach (var subordinate in (employee as ManagerAbstract).SubordinateEmployees)
+                foreach (var subordinate in (employee as IBoss).SubordinateEmployees)
                 {
-                    try
-                    {
-                        AddEmployee(subordinate);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
+                    AddEmployee(subordinate);
                 }
             }
 
             if (!Employees.Contains(employee))
                 Employees.Add(employee);
-            else
-                throw new Exception(message: "Employee already exist in current list: " + employee.Name + ", ID: " + employee.ID);
         }
 
         public double GetTotalSalary()
