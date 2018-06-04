@@ -10,11 +10,11 @@ namespace CompanyApp.Models
     {
         public List<IEmployee> Employees { get; } = new List<IEmployee>();
 
-        public static Company companyInstance { get; private set; }
+        public static Company CompanyInstance { get; private set; }
 
         static Company()
         {
-            companyInstance = new Company();
+            CompanyInstance = new Company();
         }
 
         private Company()   // Lets say this is singleton

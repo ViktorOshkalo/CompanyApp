@@ -12,7 +12,7 @@ namespace CompanyApp
         static void Main(string[] args)
         {
 
-            Company company = Company.companyInstance;
+            Company company = Company.CompanyInstance;
 
             Employee Viktor1 = new Employee("Viktor1", new DateTime(2013, 10, 1));
             Employee Viktor2 = new Employee("Viktor2", new DateTime(2013, 10, 1));
@@ -27,15 +27,18 @@ namespace CompanyApp
             company.AddEmployee(Rozhok);
             company.AddEmployee(Rozhok2);
 
-            company.Employees.ForEach(emp => Console.WriteLine( String.Format(
-                "Employee: \n\t Name: {0} \n\t Boss: {1} \n\t Salary: {2} \n", 
-                emp.Name, 
-                emp.Boss != null ? emp.Boss.Name : "--",
-                emp.CalcSalary() ))
-                );
+            //company.Employees.ForEach(emp => Console.WriteLine( String.Format(
+            //    "Employee: \n\t Name: {0} \n\t Boss: {1} \n\t Salary: {2} \n", 
+            //    emp.Name, 
+            //    emp.Boss != null ? emp.Boss.Name : "--",
+            //    emp.CalcSalary() ))
+            //    );
 
+            company.Employees.ForEach(emp => Console.WriteLine(emp)); // ToString has overridden in Employee class
+
+            Console.WriteLine("-----------//------------\n");
+            Console.WriteLine("Total salary: " + company.GetTotalSalary());
             Console.ReadKey();
-
         }
     }
 }

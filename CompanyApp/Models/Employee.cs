@@ -6,26 +6,19 @@ using System.Threading.Tasks;
 
 namespace CompanyApp.Models
 {
-    public abstract class EmployeeAbstract : IEmployee
+
+
+    public class Employee : IEmployee
     {
         public IBoss Boss { get; set; }
         public string Name { get; set; }
         public readonly DateTime StartWorkingDate;
         public virtual double BaseSalaryRate { get; set; } = 1000; // by default
 
-        public EmployeeAbstract(string name, DateTime startWorkingDate)
+        public Employee(string name, DateTime startWorkingDate)
         {
             Name = name;
             StartWorkingDate = startWorkingDate;
-        }
-
-        public abstract double CalcSalary();
-    }
-
-    public class Employee : EmployeeAbstract
-    {
-        public Employee(string name, DateTime startWorkingDate) : base(name, startWorkingDate)
-        {
         }
 
         //bonus conditions
@@ -33,7 +26,7 @@ namespace CompanyApp.Models
         private double _bonusYearPercent = 0.03,
                        _maxBonusPercent = 0.3;
 
-        public override double CalcSalary()
+        public virtual double CalcSalary()
         {
             //calc salary
             double maxBonus = BaseSalaryRate * _bonusYearPercent;
@@ -47,14 +40,14 @@ namespace CompanyApp.Models
                 return BaseSalaryRate + currentBonus;
         }
 
-        //public override string ToString()
-        //{
-        //    return String.Format("Employee: \n\tName: {0} \n\tBonus year percent: {1} \n\tMaxBonusPercent: {2} \n\tSalary: {3} \n\tBoss: {4}",
-        //        Name,
-        //        _bonusYearPercent,
-        //        _maxBonusPercent,
-        //        CalcSalary(),
-        //        Boss != null ? Boss.Name : "--");
-        //}
+        public override string ToString()
+        {
+            return String.Format("Employee: \n\tName: {0} \n\tBonus year percent: {1} \n\tMaxBonusPercent: {2} \n\tSalary: {3} \n\tBoss: {4}",
+                Name,
+                _bonusYearPercent,
+                _maxBonusPercent,
+                CalcSalary(),
+                Boss != null ? Boss.Name : "--");
+        }
     }
 }

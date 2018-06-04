@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CompanyApp.Models
 {
-    public abstract class ManagerAbstract : EmployeeAbstract, IBoss
+    public abstract class ManagerAbstract : Employee, IBoss     // share logic between all MenagerAbstract derived classes 
     {
         public ManagerAbstract(string name, DateTime startWorkingDate) : base(name, startWorkingDate)
         {
@@ -24,7 +24,7 @@ namespace CompanyApp.Models
                 _subordinateEmployees = value;
                 foreach (var sub in _subordinateEmployees)
                 {
-                    sub.Boss = this;
+                    sub.Boss = this;    // set Boss property for all subordinates to this instance 
                 }
             }
         }
