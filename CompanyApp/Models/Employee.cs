@@ -39,15 +39,5 @@ namespace CompanyApp.Models
             else
                 return BaseSalaryRate + currentBonus;
         }
-
-        public override string ToString()
-        {
-            return String.Format("Employee: \n\tName: {0} \n\tBonus year percent: {1} \n\tMaxBonusPercent: {2} \n\tSalary: {3} \n\tBoss: {4}",
-                Name,
-                _bonusYearPercent,
-                _maxBonusPercent,
-                CalcSalary(),
-                Boss != null ? Boss.Name : "--");
-        }
     }
 }

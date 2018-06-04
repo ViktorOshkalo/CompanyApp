@@ -27,14 +27,12 @@ namespace CompanyApp
             company.AddEmployee(Rozhok);
             company.AddEmployee(Rozhok2);
 
-            //company.Employees.ForEach(emp => Console.WriteLine( String.Format(
-            //    "Employee: \n\t Name: {0} \n\t Boss: {1} \n\t Salary: {2} \n", 
-            //    emp.Name, 
-            //    emp.Boss != null ? emp.Boss.Name : "--",
-            //    emp.CalcSalary() ))
-            //    );
-
-            company.Employees.ForEach(emp => Console.WriteLine(emp)); // ToString has overridden in Employee class
+            company.Employees.ForEach(emp => Console.WriteLine(String.Format(
+                "Employee: \n\t Name: {0} \n\t Boss: {1} \n\t Salary: {2} \n",
+                emp.Name,
+                emp.Boss != null ? emp.Boss.Name : "--",
+                emp.CalcSalary()))
+                );
 
             Console.WriteLine("-----------//------------\n");
             Console.WriteLine("Total salary: " + company.GetTotalSalary());
