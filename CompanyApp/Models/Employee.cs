@@ -8,10 +8,18 @@ namespace CompanyApp.Models
 {
     public class Employee : IEmployee
     {
-        public IBoss Boss { get; set; }
         public string Name { get; set; }
         public DateTime StartWorkingDate { get; private set; }
         public virtual double BaseSalaryRate { get; set; } = 1000; // by default
+        private IBoss _boss;
+        public IBoss Boss {
+            get => _boss;
+            set
+            {
+                if (this != value)
+                    _boss = value;
+            }
+        }
 
         public Employee(string name, DateTime startWorkingDate)
         {

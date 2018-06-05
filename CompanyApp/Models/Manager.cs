@@ -17,6 +17,10 @@ namespace CompanyApp.Models
             set
             {
                 _subordinateEmployees = value as List<IEmployee>;
+
+                if (_subordinateEmployees.Contains(this))   // remove self
+                    _subordinateEmployees.Remove(this);
+
                 foreach (var sub in _subordinateEmployees)
                 {
                     sub.Boss = this;    // set Boss property for all subordinates to this instance 
