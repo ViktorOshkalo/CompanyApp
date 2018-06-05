@@ -8,7 +8,8 @@ namespace CompanyApp.Models
 {
     public class Company
     {
-        public List<IEmployee> Employees { get; } = new List<IEmployee>();
+        private List<IEmployee> _employees = new List<IEmployee>();
+        public  IList<IEmployee> Employees { get => _employees.AsReadOnly(); private set{} } // unable to change private field directly
 
         public static Company CompanyInstance { get; private set; }
 
@@ -17,7 +18,7 @@ namespace CompanyApp.Models
             CompanyInstance = new Company();
         }
 
-        private Company()   // Lets say this is singleton
+        private Company()   // Let say this is singleton
         {
         }
 
@@ -31,13 +32,13 @@ namespace CompanyApp.Models
                 }
             }
 
-            if (!Employees.Contains(employee))
-                Employees.Add(employee);
+            if (!_employees.Contains(employee))
+                _employees.Add(employee);
         }
 
         public double GetTotalSalary()
         {
-            return Employees.Sum(emp => emp.CalcSalary());
+            return _employees.Sum(emp => emp.CalcSalary());
         }
     }
 }

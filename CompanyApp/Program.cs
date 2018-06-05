@@ -14,22 +14,31 @@ namespace CompanyApp
 
             Company company = Company.CompanyInstance;
 
-            Employee Viktor1 = new Employee("Viktor1", new DateTime(2013, 10, 1));
-            Employee Viktor2 = new Employee("Viktor2", new DateTime(2013, 10, 1));
+            IEmployee Viktor1 = new Employee("Viktor1", new DateTime(2013, 10, 1));
+            IEmployee Viktor2 = new Employee("Viktor2", new DateTime(2013, 10, 1));
 
-            Manager Yuri = new Manager("Yuri", new DateTime(2005, 5, 15));
-            Sales Rozhok = new Sales("Rozhek", new DateTime(2014, 8, 1));
-            Sales Rozhok2 = new Sales("Rozhek2", new DateTime(2014, 8, 1));
+            IBoss Yuri = new Manager("Yuri", new DateTime(2005, 5, 15));
+            IBoss Rozhok = new Sales("Alex", new DateTime(2014, 8, 1));
+            IBoss Rozhok2 = new Sales("Alex2", new DateTime(2014, 8, 1));
 
             Rozhok.SubordinateEmployees = new List<IEmployee>() { Viktor1, Viktor2 };
             Rozhok2.SubordinateEmployees = new List<IEmployee>() { Rozhok, Yuri };
-            
+
             company.AddEmployee(Rozhok);
             company.AddEmployee(Rozhok2);
 
-            company.Employees.ForEach(emp => Console.WriteLine(String.Format(
-                "Employee: \n\t Name: {0} \n\t Boss: {1} \n\t Salary: {2} \n",
+            //----------------
+
+            Employee Viktor3 = new Employee("Viktor333", new DateTime(2010, 10, 1));
+            //Rozhok2.SubordinateEmployees.Add(Viktor3);    // error: collection is read only
+            //company.Employees.Add(Viktor3);               // error: collection is read only
+
+            //-----------------
+
+            company.Employees.ToList().ForEach(emp => Console.WriteLine(String.Format(
+                "Employee: \n\t Name:\t\t {0} \n\t Start date:\t {1} \n\t Boss:\t\t {2} \n\t Salary:\t {3} \n",
                 emp.Name,
+                emp.StartWorkingDate.ToShortDateString(),
                 emp.Boss != null ? emp.Boss.Name : "--",
                 emp.CalcSalary()))
                 );

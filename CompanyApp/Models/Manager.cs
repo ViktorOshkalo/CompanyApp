@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CompanyApp.Models
 {
@@ -13,15 +11,12 @@ namespace CompanyApp.Models
         }
 
         private List<IEmployee> _subordinateEmployees = new List<IEmployee>();
-        public List<IEmployee> SubordinateEmployees
+        public IList<IEmployee> SubordinateEmployees
         {
-            get
-            {
-                return _subordinateEmployees;
-            }
+            get => _subordinateEmployees.AsReadOnly();  // unable to change private field directly
             set
             {
-                _subordinateEmployees = value;
+                _subordinateEmployees = value as List<IEmployee>;
                 foreach (var sub in _subordinateEmployees)
                 {
                     sub.Boss = this;    // set Boss property for all subordinates to this instance 
