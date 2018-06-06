@@ -10,7 +10,7 @@ namespace CompanyApp.Models
     {
         public string Name { get; set; }
         public DateTime StartWorkingDate { get; private set; }
-        public virtual double BaseSalaryRate { get; set; } = 1000; // by default
+        public double BaseSalaryRate { get; set; } = 1000; // by default
         private IBoss _boss;
         public IBoss Boss {
             get => _boss;
@@ -18,6 +18,8 @@ namespace CompanyApp.Models
             {
                 if (this != value)
                     _boss = value;
+                else
+                    throw new Exception(message: "unable set Boss to self");
             }
         }
 
@@ -27,6 +29,11 @@ namespace CompanyApp.Models
             StartWorkingDate = startWorkingDate;
         }
 
+        public Employee(string name, DateTime startWorkingDate, double baseSalary): this (name, startWorkingDate)
+        {
+            BaseSalaryRate = baseSalary;
+        }
+
         //bonus conditions
         //Зарплата сотрудника Employee - это базовая ставка плюс 3% за каждый год работы в компании, но не больше 30% суммарной надбавки.
         private double _bonusYearPercent = 0.03,
@@ -34,16 +41,13 @@ namespace CompanyApp.Models
 
         public virtual double CalcSalary()
         {
-            //calc salary
-            double maxBonus = BaseSalaryRate * _bonusYearPercent;
-            double maxSalary = BaseSalaryRate + maxBonus;
             int totalWorkingYears = (DateTime.Today - StartWorkingDate).Days / 365;
 
-            double currentBonus = BaseSalaryRate * _maxBonusPercent * totalWorkingYears;
-            if (currentBonus > maxBonus)
-                return maxSalary;
-            else
-                return BaseSalaryRate + currentBonus;
+            double currentBonusPercent = _maxBonusPercent;
+            if (totalWorkingYears * _bonusYearPercent < currentBonusPercent)
+                currentBonusPercent = totalWorkingYears * _bonusYearPercent;
+
+            return BaseSalaryRate + BaseSalaryRate * currentBonusPercent;
         }
     }
 }

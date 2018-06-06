@@ -18,32 +18,35 @@ namespace CompanyApp.Models
         {
         }
 
+        public Sales(string name, DateTime startWorkingDate, double baseSalary) : base(name, startWorkingDate, baseSalary)
+        {
+        }
+
         public override double CalcSalary()
         {
             //calc salary
             double allLevelSubordinariesBonus = SubordinateEmployees.Sum(sub => CalcRecursionSalary(sub)) * _allLevelSubordinariesBonusPercent;
 
-            double maxBonus = BaseSalaryRate * _maxBonusPercent;
-            double maxSalary = BaseSalaryRate + maxBonus;
             int totalWorkingYears = (DateTime.Today - StartWorkingDate).Days / 365;
 
-            double currentBonus = BaseSalaryRate * _bonusYearPercent * totalWorkingYears;
-            if (currentBonus > maxBonus)
-                return maxSalary + allLevelSubordinariesBonus;
-            else
-                return BaseSalaryRate + currentBonus + allLevelSubordinariesBonus;
+            double currentBonusPercent = _maxBonusPercent;
+            if (totalWorkingYears * _bonusYearPercent < currentBonusPercent)
+                currentBonusPercent = totalWorkingYears * _bonusYearPercent;
+
+            return BaseSalaryRate + BaseSalaryRate * currentBonusPercent + allLevelSubordinariesBonus;
         }
 
-        //recursive salary calculation of all subordinate employees 
+        //recursive salary calculation of all levels subordinate employees 
         private double CalcRecursionSalary(IEmployee employee)
         {
             double sumSalary = 0;
             if (employee is ManagerAbstract)
             {
-                foreach (var subordinate in (employee as ManagerAbstract).SubordinateEmployees)
+                foreach (var subordinate in (employee as IBoss).SubordinateEmployees)
                 {
                     sumSalary += subordinate.CalcSalary();
-                    sumSalary += CalcRecursionSalary(subordinate);
+                    if (subordinate is IBoss)
+                        sumSalary += CalcRecursionSalary(subordinate);
                 }
             }
             else

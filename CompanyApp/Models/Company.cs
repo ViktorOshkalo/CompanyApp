@@ -9,7 +9,7 @@ namespace CompanyApp.Models
     public class Company
     {
         private List<IEmployee> _employees = new List<IEmployee>();
-        public  IList<IEmployee> Employees { get => _employees.AsReadOnly(); private set{} } // unable to change private field directly
+        public  IList<IEmployee> Employees { get => _employees.AsReadOnly(); private set{} } // unable to change private list directly
 
         public static Company CompanyInstance { get; private set; }
 
@@ -38,7 +38,15 @@ namespace CompanyApp.Models
 
         public double GetTotalSalary()
         {
-            return _employees.Sum(emp => emp.CalcSalary());
+            double sum = 0;
+            foreach (var emp in Employees)
+            {
+                double a = emp.CalcSalary();
+                sum += a;
+            }
+            return sum;
+            
+            //return _employees.Sum(emp => emp.CalcSalary());
         }
     }
 }

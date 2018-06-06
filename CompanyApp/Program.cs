@@ -11,6 +11,7 @@ namespace CompanyApp
     {
         static void Main(string[] args)
         {
+            // some actions 
 
             Company company = Company.CompanyInstance;
 
@@ -35,7 +36,7 @@ namespace CompanyApp
 
             //-----------------
 
-            Alex.Boss = Alex;
+            // Alex.Boss = Alex;    // throw exception
 
             //-----------------
 
