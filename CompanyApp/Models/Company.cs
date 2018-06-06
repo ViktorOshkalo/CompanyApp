@@ -26,7 +26,7 @@ namespace CompanyApp.Models
         {
             if (employee is IBoss)
             {
-                foreach (var subordinate in (employee as IBoss).SubordinateEmployees)
+                foreach (var subordinate in (employee as IBoss).SubordinateEmployees.ToList())
                 {
                     AddEmployee(subordinate);
                 }
