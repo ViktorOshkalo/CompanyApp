@@ -14,11 +14,7 @@ namespace CompanyApp.Models
                 _maxBonusPercent = 0.35,
                 _allLevelSubordinariesBonusPercent = 0.003;
 
-        public Sales(string name, DateTime startWorkingDate) : base(name, startWorkingDate)
-        {
-        }
-
-        public Sales(string name, DateTime startWorkingDate, double baseSalary) : base(name, startWorkingDate, baseSalary)
+        public Sales(string name, DateTime startWorkingDate, double baseSalary = 1000) : base(name, startWorkingDate, baseSalary)
         {
         }
 

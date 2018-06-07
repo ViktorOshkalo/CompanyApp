@@ -6,40 +6,23 @@ namespace CompanyApp.Models
 {
     public abstract class ManagerAbstract : Employee, IBoss     // share logic between all MenagerAbstract derived classes 
     {
-        public ManagerAbstract(string name, DateTime startWorkingDate) : base(name, startWorkingDate)
-        {
-        }
-
         public ManagerAbstract(string name, DateTime startWorkingDate, double baseSalary) : base(name, startWorkingDate, baseSalary)
         {
+            SubordinateEmployees = new SubordinateList(this);
+            SubordinateEmployees.AddedEmployee += SetAsBoss;        // subscribe to suboridnate add
         }
 
-        private List<IEmployee> _subordinateEmployees = new List<IEmployee>();
-        public IList<IEmployee> SubordinateEmployees
+        public IEmployeeList SubordinateEmployees { get; private set; }
+
+        private void SetAsBoss(object sender, IEmployee employee)
         {
-            get => _subordinateEmployees.AsReadOnly();  // unable to change private field directly
-            set
-            {
-                _subordinateEmployees = value as List<IEmployee>;
-
-                if (_subordinateEmployees.Contains(this))   // remove self
-                    _subordinateEmployees.Remove(this);
-
-                foreach (var sub in _subordinateEmployees)
-                {
-                    sub.Boss = this;    // set Boss property for all subordinates to this instance 
-                }
-            }
+            employee.Boss = this;
         }
     }
 
     public class Manager : ManagerAbstract
     {
-        public Manager(string name, DateTime startWorkingDate) : base(name, startWorkingDate)
-        {
-        }
-
-        public Manager(string name, DateTime startWorkingDate, double baseSalary) : base(name, startWorkingDate, baseSalary)
+        public Manager(string name, DateTime startWorkingDate, double baseSalary = 1000) : base(name, startWorkingDate, baseSalary)
         {
         }
 

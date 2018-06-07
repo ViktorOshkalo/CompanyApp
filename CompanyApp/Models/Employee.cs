@@ -10,27 +10,25 @@ namespace CompanyApp.Models
     {
         public string Name { get; set; }
         public DateTime StartWorkingDate { get; private set; }
-        public double BaseSalaryRate { get; set; } = 1000; // by default
+        public double BaseSalaryRate { get; set; }
         private IBoss _boss;
         public IBoss Boss {
             get => _boss;
             set
             {
                 if (this != value)
+                {
                     _boss = value;
+                }
                 else
                     throw new Exception(message: "unable set Boss to self");
             }
         }
 
-        public Employee(string name, DateTime startWorkingDate)
+        public Employee(string name, DateTime startWorkingDate, double baseSalary = 1000)
         {
             Name = name;
             StartWorkingDate = startWorkingDate;
-        }
-
-        public Employee(string name, DateTime startWorkingDate, double baseSalary): this (name, startWorkingDate)
-        {
             BaseSalaryRate = baseSalary;
         }
 

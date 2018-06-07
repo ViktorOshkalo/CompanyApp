@@ -22,15 +22,21 @@ namespace CompanyApp
             IBoss Alex = new Sales("Alex", new DateTime(2014, 8, 1));
             IBoss Alex2 = new Sales("Alex2", new DateTime(2014, 8, 1));
 
-            Alex.SubordinateEmployees = new List<IEmployee>() { Viktor1, Viktor2 };
-            Alex2.SubordinateEmployees = new List<IEmployee>() { Alex, Yuri };
+            Alex.SubordinateEmployees.Add(Viktor1);
+            Alex.SubordinateEmployees.Add(Viktor2);
+
+            Alex2.SubordinateEmployees.Add(Alex);
+            Alex2.SubordinateEmployees.Add(Yuri);
 
             company.AddEmployee(Alex);
             company.AddEmployee(Alex2);
 
+
             //----------------
 
             IEmployee Viktor3 = new Employee("Viktor333", new DateTime(2010, 10, 1));
+            Alex2.SubordinateEmployees.Add(Viktor3);
+
             //Rozhok2.SubordinateEmployees.Add(Viktor3);    // error: collection is read only
             //company.Employees.Add(Viktor3);               // error: collection is read only
 
@@ -39,6 +45,11 @@ namespace CompanyApp
             // Alex.Boss = Alex;    // throw exception
 
             //-----------------
+
+            company.RemoveEmployee(Viktor3);
+
+            //Viktor3.Boss = Alex;
+            //Alex.SubordinateEmployees.Add(Viktor3);
 
 
             company.Employees.ToList().ForEach(emp => Console.WriteLine(String.Format(

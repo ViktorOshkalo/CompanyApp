@@ -18,20 +18,23 @@ namespace CompanyApp.Tests
 
             Assert.DoesNotThrow(() =>
                 {
-                    _manager.SubordinateEmployees = new List<IEmployee>() { _manager };
-                }
-            );
-            Assert.That(_manager.SubordinateEmployees, Has.No.Member(_manager));
-
-            Assert.DoesNotThrow(() =>
-                {
-                    _manager.SubordinateEmployees = new List<IEmployee>() { _employee1, _employee2 };
-                    _sales.SubordinateEmployees = new List<IEmployee>() { _manager };
+                    _manager.SubordinateEmployees.Add(_employee1);
+                    _manager.SubordinateEmployees.Add(_employee2);
+                    _sales.SubordinateEmployees.Add(_manager);
                 }
             );
             Assert.That(_manager.SubordinateEmployees, Contains.Item(_employee1));
             Assert.That(_manager.SubordinateEmployees, Contains.Item(_employee2));
             Assert.That(_sales.SubordinateEmployees, Contains.Item(_manager));
+
+
+            // migrate employee 
+            _manager.SubordinateEmployees.Remove(_employee1);
+            _sales.SubordinateEmployees.Add(_employee1);
+            Assert.That(_manager.SubordinateEmployees, Has.No.Member(_employee1));
+            Assert.That(_sales.SubordinateEmployees, Contains.Item(_employee1));
+
+
         }
 
         [Test(Description = "test employee salary")] 
@@ -57,8 +60,9 @@ namespace CompanyApp.Tests
 
             IEmployee employee1 = new Employee("NameEmployee1", new DateTime(2017, 3, 3), 1000); // 1030
             IEmployee employee2 = new Employee("NameEmployee2", new DateTime(2017, 3, 3), 1000); // 1030
-            IBoss manager = new Manager("NameManager", new DateTime(2015, 4, 4), 1000); 
-            manager.SubordinateEmployees = new List<IEmployee>() { employee1, employee2 };
+            IBoss manager = new Manager("NameManager", new DateTime(2015, 4, 4), 1000);
+            manager.SubordinateEmployees.Add(employee1, employee2);
+
 
             double expected = 1160;  // 1000 + (3 years * 0.05 * 1000) + (1030 * 0.005) 
 
@@ -76,9 +80,9 @@ namespace CompanyApp.Tests
             IEmployee employee1 = new Employee("NameEmployee1", new DateTime(2017, 3, 3), 1000); // 1030
             IEmployee employee2 = new Employee("NameEmployee2", new DateTime(2017, 3, 3), 1000); // 1030
             IBoss manager = new Manager("NameManager", new DateTime(2015, 4, 4), 1000);          // 1160
-            manager.SubordinateEmployees = new List<IEmployee>() { employee1, employee2 };
+            manager.SubordinateEmployees.Add(employee1, employee2);
             IBoss sales = new Sales("NameSales", new DateTime(2013, 5, 5), 1000);
-            sales.SubordinateEmployees = new List<IEmployee>() { manager };
+            sales.SubordinateEmployees.Add( manager);
 
             double expected = 1056; // 1000 + (5 years * 0.01 * 1000) + (1030 + 1030 + 1155.2) * 0.003
 
@@ -91,9 +95,9 @@ namespace CompanyApp.Tests
             IEmployee employee1 = new Employee("NameEmployee1", new DateTime(2017, 3, 3), 1000); // 1030
             IEmployee employee2 = new Employee("NameEmployee2", new DateTime(2017, 3, 3), 1000); // 1030
             IBoss manager = new Manager("NameManager", new DateTime(2015, 4, 4), 1000);          // 1160
-            manager.SubordinateEmployees = new List<IEmployee>() { employee1, employee2 };
+            manager.SubordinateEmployees.Add(employee1, employee2);
             IBoss sales = new Sales("NameSales", new DateTime(2013, 5, 5), 1000);                // 1056
-            sales.SubordinateEmployees = new List<IEmployee>() { manager };
+            sales.SubordinateEmployees.Add(manager);
 
             var company = Company.CompanyInstance;
 

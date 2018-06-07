@@ -30,23 +30,33 @@ namespace CompanyApp.Models
                 {
                     AddEmployee(subordinate);
                 }
+                (employee as IBoss).SubordinateEmployees.AddedEmployee += AddEmployee;
+                (employee as IBoss).SubordinateEmployees.RemovedEmployee += RemoveEmployee;
             }
 
             if (!_employees.Contains(employee))
                 _employees.Add(employee);
         }
 
+        private void AddEmployee(object sender, IEmployee employee)
+        {
+            AddEmployee(employee);
+        }
+
+        public bool RemoveEmployee(IEmployee employee)
+        {
+            employee.Boss?.SubordinateEmployees.Remove(employee);
+            return _employees.Remove(employee);
+        }
+
+        private void RemoveEmployee(object sender, IEmployee employee)
+        {
+            RemoveEmployee(employee);
+        }
+
         public double GetTotalSalary()
         {
-            double sum = 0;
-            foreach (var emp in Employees)
-            {
-                double a = emp.CalcSalary();
-                sum += a;
-            }
-            return sum;
-            
-            //return _employees.Sum(emp => emp.CalcSalary());
+            return _employees.Sum(emp => emp.CalcSalary());
         }
     }
 }
